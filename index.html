@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Context Capsule helps you save and resume interrupted work.">
+  <title>Context Capsule</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Context Capsule home">
+        <span class="brand-mark" aria-hidden="true">CC</span>
+        <span>Context Capsule</span>
+      </a>
+      <div class="topbar-actions">
+        <button class="button button-quiet" id="importButton" type="button">Import</button>
+        <button class="button button-quiet" id="exportButton" type="button">Export JSON</button>
+        <input id="importInput" type="file" accept="application/json,.json" hidden>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">Your work, waiting for you</p>
+          <h1 id="page-title">Pick up exactly where you left off.</h1>
+          <p class="hero-copy">Capture the important details before you switch context. Future you will thank you.</p>
+        </div>
+        <div class="hero-stat" aria-label="Capsule count">
+          <span id="capsuleCount">0</span>
+          <small>capsules saved</small>
+        </div>
+      </section>
+
+      <section class="quick-capture panel" aria-labelledby="capture-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Fast lane</p>
+            <h2 id="capture-title">Quick Capture</h2>
+          </div>
+          <span class="shortcut-hint">⌘ / Ctrl + Enter to save</span>
+        </div>
+        <form id="capsuleForm" novalidate>
+          <div class="form-grid">
+            <label class="field field-wide">
+              <span>Capsule title <b aria-hidden="true">*</b></span>
+              <input id="title" name="title" type="text" maxlength="90" placeholder="e.g. Refactor auth middleware" required>
+              <small class="field-error" data-error-for="title"></small>
+            </label>
+            <label class="field">
+              <span>Project <b aria-hidden="true">*</b></span>
+              <input id="project" name="project" type="text" maxlength="60" placeholder="e.g. Atlas dashboard" required>
+              <small class="field-error" data-error-for="project"></small>
+            </label>
+            <label class="field">
+              <span>Current task <b aria-hidden="true">*</b></span>
+              <input id="task" name="task" type="text" maxlength="120" placeholder="What are you working on?" required>
+              <small class="field-error" data-error-for="task"></small>
+            </label>
+            <label class="field">
+              <span>Last completed step</span>
+              <input id="lastStep" name="lastStep" type="text" maxlength="140" placeholder="What did you just finish?">
+            </label>
+            <label class="field">
+              <span>Next action <b aria-hidden="true">*</b></span>
+              <input id="nextAction" name="nextAction" type="text" maxlength="140" placeholder="The first thing to do next" required>
+              <small class="field-error" data-error-for="nextAction"></small>
+            </label>
+            <label class="field field-wide">
+              <span>Notes <em>Optional</em></span>
+              <textarea id="notes" name="notes" maxlength="700" rows="3" placeholder="Links, decisions, gotchas, or anything else worth remembering..."></textarea>
+              <small class="character-count"><span id="notesCount">0</span>/700</small>
+            </label>
+          </div>
+          <div class="form-actions">
+            <button class="button button-primary" type="submit"><span id="saveButtonLabel">Save capsule</span><span aria-hidden="true">→</span></button>
+            <button class="button button-quiet" id="cancelEditButton" type="button" hidden>Cancel edit</button>
+            <span class="form-status" id="formStatus" role="status" aria-live="polite"></span>
+          </div>
+        </form>
+      </section>
+
+      <section class="capsules-section" aria-labelledby="capsules-title">
+        <div class="toolbar">
+          <div class="section-heading compact">
+            <div>
+              <p class="eyebrow">Your workspace</p>
+              <h2 id="capsules-title">Capsules</h2>
+            </div>
+          </div>
+          <div class="toolbar-actions">
+            <label class="search-box">
+              <span class="sr-only">Search capsules</span>
+              <span aria-hidden="true">⌕</span>
+              <input id="searchInput" type="search" placeholder="Search capsules..." autocomplete="off">
+              <kbd>/</kbd>
+            </label>
+            <button class="button button-quiet danger-text" id="clearAllButton" type="button">Clear all</button>
+          </div>
+        </div>
+        <div id="capsuleList" class="capsule-list"></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>Stored locally in your browser.</span>
+      <span class="footer-dot" aria-hidden="true"></span>
+      <span>No account required.</span>
+    </footer>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <dialog id="confirmDialog" class="confirm-dialog">
+    <form method="dialog">
+      <p class="eyebrow">Are you sure?</p>
+      <h2 id="confirmTitle">Delete this capsule?</h2>
+      <p id="confirmMessage">This action cannot be undone.</p>
+      <div class="dialog-actions">
+        <button class="button button-quiet" value="cancel">Cancel</button>
+        <button class="button button-danger" id="confirmAction" value="confirm">Delete</button>
+      </div>
+    </form>
+  </dialog>
+  <script src="script.js"></script>
+</body>
+</html>
